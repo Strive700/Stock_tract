@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>股票交易系统 - 用户注册</title>
+    <link rel="stylesheet" href="register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="register-container">
+        <div class="register-header">
+            <h1>创建账号</h1>
+            <p>欢迎加入股票交易平台</p>
+        </div>
+
+        <div class="register-form">
+            <!-- 昵称 -->
+            <div class="form-group">
+                <label for="nickName"><i class="fas fa-user"></i></label>
+                <input type="text" id="nickName" placeholder="昵称" required>
+            </div>
+
+            <!-- 真实姓名 -->
+            <div class="form-group">
+                <label for="name"><i class="fas fa-id-card"></i></label>
+                <input type="text" id="name" placeholder="真实姓名" required>
+            </div>
+
+            <!-- 手机号码 -->
+            <div class="form-group">
+                <label for="phone"><i class="fas fa-phone"></i></label>
+                <input type="tel" id="phone" placeholder="手机号码" required>
+            </div>
+
+            <!-- 密码 -->
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i></label>
+                <input type="password" id="password" placeholder="密码" required>
+                <small class="password-hint">密码至少8位，包含字母和数字</small>
+            </div>
+
+            <!-- 确认密码 -->
+            <div class="form-group">
+                <label for="confirm-password"><i class="fas fa-lock"></i></label>
+                <input type="password" id="confirm-password" placeholder="确认密码" required>
+            </div>
+
+            <!-- 性别 -->
+            <div class="form-group radio-group">
+                <label class="radio-label">性别：</label>
+                <div class="radio-options">
+                    <input type="radio" id="male" name="sex" value="male" checked>
+                    <label for="male">男</label>
+                    <input type="radio" id="female" name="sex" value="female">
+                    <label for="female">女</label>
+                </div>
+            </div>
+
+            <!-- 服务条款 -->
+            <div class="form-options">
+                <div class="agree-terms">
+                    <input type="checkbox" id="agree" required>
+                    <label for="agree">我同意 <a href="#" class="terms-link">服务条款</a> 和 <a href="#" class="privacy-link">隐私政策</a></label>
+                </div>
+            </div>
+
+            <button id="register-btn" class="btn-register">注册</button>
+
+            <div class="register-footer">
+                <p>已有账号? <a href="login.html" class="login-link">返回登录</a></p>
+            </div>
+        </div>
+
+        <div id="register-message" class="message"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="register.js"></script>
+</body>
+</html>
