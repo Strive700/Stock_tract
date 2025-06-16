@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xxx.stock_trading_springboot.Mapper.OrderMapper">
+    <resultMap id="OrderResultMap" type="com.xxx.stock_trading_springboot.Bean.Order">
+        <result column="ts_code" property="tsCode" />
+        <result column="order_no" property="orderId"/>
+        <result column="user_id" property="userId"/>
+        <result column="deal_price" property="dealPrice"/>
+        <result column="deal_date" property="dealDate"/>
+        <result column="deal_value" property="dealValue"/>
+        <result column="deal_number" property="dealNumber"/>
+    </resultMap>
+    <insert id="insertTransaction">
+        insert  into  `order`(order_no,user_id,ts_code,type,deal_price,deal_number,deal_value,deal_date,status)
+            value (#{orderId},#{userId},#{tsCode},#{type},#{dealPrice},#{dealNumber},#{dealValue},#{dealDate},#{status});
+    </insert>
+    <select id="selectOrderById" resultMap="OrderResultMap">
+        select  * from `order`
+        where user_id= #{userId};
+    </select>
+    <select id="selectOrdersByUserId" resultMap="OrderResultMap">
+        SELECT * FROM `order`
+        <where>
+            user_id= #{userId}
+            <if test="orderId != null and orderId!=''">
+                order_no=#{orderId}
+            </if>
+            <if test="tsCode!=null and tsCode!=''">
+                AND ts_Code=#{tsCode}
+            </if>
+            <if test="type!=null and type!=''">
+                AND type=#{type}
+            </if>
+            <if test="status!=null and status!=''">
+                AND status=#{status}
+            </if>
+            <if test="dealDate!=null and dealDate!=''">
+                AND deal_date LIKE CONCAT(#{dealDate}, '%')
+            </if>
+        </where>
+        LIMIT #{page}, #{pageSize}
+    </select>
+    <select id="countOrdersByUserId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM `order`
+        <where>
+            user_id= #{userId}
+            <if test="orderId!=null and orderId!=''">
+                order_no=#{orderId}
+            </if>
+            <if test="tsCode!=null and tsCode!=''">
+                AND ts_Code=#{tsCode}
+            </if>
+            <if test="type!=null and type!=''">
+                AND type=#{type}
+            </if>
+            <if test="status!=null and status!=''">
+                AND status=#{status}
+            </if>
+            <if test="dealDate!=null and dealDate!=''">
+                AND deal_date LIKE CONCAT(#{dealDate}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>

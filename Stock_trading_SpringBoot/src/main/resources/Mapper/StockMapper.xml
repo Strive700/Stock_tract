@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xxx.stock_trading_springboot.Mapper.StockMapper">
+    <resultMap id="StockResultMap" type="com.xxx.stock_trading_springboot.Bean.Stock">
+        <result column="ts_code" property="tsCode" />
+        <result column="market" property="marketType" />
+    </resultMap>
+    <select id="selectList" resultMap="StockResultMap">
+        select * from stock
+        <where>
+            <if test="tsCode!= null and tsCode!='' ">
+                ts_code=#{tsCode}
+            </if>
+            <if test="name!= null and name!='' ">
+                name=#{name}
+            </if>
+            <if test="marketType!= null and marketType!='' ">
+                market=#{marketType}
+            </if>
+        </where>
+        LIMIT #{offset}, #{pageSize}
+    </select>
+    <select id="selectOne" parameterType="map" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM stock
+        <where>
+            <if test="tsCode != null and tsCode != ''">
+                AND ts_code = #{tsCode}
+            </if>
+            <if test="name!= null and name!='' ">
+                name=#{name}
+            </if>
+            <if test="marketType != null and marketType != ''">
+                AND market=#{marketType}
+            </if>
+        </where>
+    </select>
+    <select id="selectStockNamesByCodes" resultType="map" parameterType="map">
+        SELECT ts_code as tsCode, name FROM stock
+        <where>
+            <if test="tsCodeList != null and tsCodeList.size() > 0">
+                ts_code IN
+                <foreach item="code" collection="tsCodeList" open="(" separator="," close=")">
+                    #{code}
+                </foreach>
+            </if>
+            <if test="tsCodeList == null or tsCodeList.size() == 0">
+                AND 1 = 0 <!-- 强制返回空结果 -->
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xxx.stock_trading_springboot.Mapper.DtlMapper">
+    <resultMap id="DtlResultMap" type="com.xxx.stock_trading_springboot.Bean.Dtl">
+        <result column="trade_date" property="tsCode" />
+        <result column="ts_code" property="tsCode"/>
+        <result column="pct_change" property="pctChange"/>
+        <result column="turnover_rate" property="turnoverRate"/>
+        <result column="l_sell" property="lSell"/>
+        <result column="l_buy" property="lBuy"/>
+        <result column="l_amount" property="lAmount"/>
+        <result column="net_amount" property="netAmount"/>
+        <result column="net_rate" property="netRate"/>
+        <result column="amount_rate" property="amountRate"/>
+        <result column="float_values" property="floatValues"/>
+    </resultMap>
+    <select id="selectAllDtl" resultMap="DtlResultMap">
+        select * from dtl
+        <where>
+            <if test=" key != null and key.trim() !='' ">
+            name LIKE CONCAT('%', #{key}, '%')
+            </if>
+        </where>
+        LIMIT #{page}, #{pageSize}
+    </select>
+    <select id="getStocksByPctChangeGreaterThanZero" resultMap="DtlResultMap">
+        SELECT * FROM dtl
+        WHERE pct_change > 0
+        <if test=" key!=null and key.trim()!='' ">
+           AND name LIKE CONCAT('%', #{key}, '%')
+        </if>
+        LIMIT #{page}, #{pageSize}
+    </select>
+    <select id="getStocksByPctChangeLessThanZero" resultMap="DtlResultMap">
+        select * from dtl
+        where pct_change &lt; 0
+        <if test=" key!=null and key.trim()!='' ">
+            AND name LIKE CONCAT('%', #{key}, '%')
+        </if>
+        LIMIT #{page}, #{pageSize}
+    </select>
+    <select id="getTopNStocksByPctChangeDesc" resultMap="DtlResultMap">
+        SELECT * FROM dtl
+        <where>
+            <if test=" key!=null and key.trim()!='' ">
+                name LIKE CONCAT('%', #{key}, '%')
+            </if>
+        </where>
+        ORDER BY pct_change DESC LIMIT #{topN}
+    </select>
+    <select id="getTopNStocksByPctChangeAsc" resultMap="DtlResultMap">
+        SELECT * FROM dtl
+        <where>
+            <if test=" key!=null and key.trim()!='' ">
+                name LIKE CONCAT('%', #{key}, '%')
+            </if>
+        </where>
+        ORDER BY pct_change ASC LIMIT #{topN}
+    </select>
+    <select id="selectDtlByName" resultMap="DtlResultMap">
+        SELECT * FROM dtl
+        where name=#{key};
+    </select>
+    <select id="countselectAllDtl" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM dtl
+        <where>
+            <if test=" key != null and key.trim() !='' ">
+                name LIKE CONCAT('%', #{key}, '%')
+            </if>
+        </where>
+    </select>
+    <select id="countselectDtlByPctChangeGreaterThanZero" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM dtl
+        WHERE pct_change > 0
+        <if test=" key!=null and key.trim()!='' ">
+            AND name LIKE CONCAT('%', #{key}, '%')
+        </if>
+    </select>
+    <select id="countselectDtlByPctChangeLessThanZero" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM dtl
+        where pct_change &lt; 0
+        <if test=" key!=null and key.trim()!='' ">
+            AND name LIKE CONCAT('%', #{key}, '%')
+        </if>
+    </select>
+</mapper>

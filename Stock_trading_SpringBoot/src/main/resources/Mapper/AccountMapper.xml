@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xxx.stock_trading_springboot.Mapper.AccountMapper">
+    <resultMap id="AccountResultMap" type="com.xxx.stock_trading_springboot.Bean.Account">
+        <result column="market_value" property="marketValue" />
+        <result column="account_id" property="accountId"/>
+        <result column="money_rest" property="moneyRest"/>
+    </resultMap>
+    <insert id="insertAccount" parameterType="com.xxx.stock_trading_springboot.Bean.Account" useGeneratedKeys="true" keyProperty="accountId">
+        insert account (asset,money_rest,market_value)
+        values (#{asset},#{moneyRest},#{marketValue})
+    </insert>
+    <update id="updateTransaction">
+        update account
+        <set>
+            market_value = market_value - #{dealPrice},
+            money_rest = money_rest + #{dealPrice},
+            asset = market_value - #{dealPrice} + money_rest + #{dealPrice}
+        </set>
+        where account_id = #{accountId};
+    </update>
+    <update id="updateBuyTransaction">
+        update account
+        <set>
+            market_value = market_value + #{expenses},
+            money_rest = money_rest - #{dealPrice},
+            asset = market_value - #{dealPrice} + money_rest + #{expenses}
+        </set>
+        where account_id = #{accountId};
+    </update>
+    <select id="selectByAccountId" resultMap="AccountResultMap">
+        SELECT * FROM account
+        where account_id=#{accountId};
+    </select>
+</mapper>

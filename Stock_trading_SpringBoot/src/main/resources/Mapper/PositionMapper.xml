@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xxx.stock_trading_springboot.Mapper.PositionMapper">
+    <resultMap id="PositionResultMap" type="com.xxx.stock_trading_springboot.Bean.Position">
+        <result column="position_id" property="positionId" />
+        <result column="account_id" property="accountId"/>
+        <result column="ts_code" property="tsCode" />
+        <result column="deal_price" property="dealPrice"/>
+        <result column="market_price" property="marketPrice"/>
+        <result column="market_value" property="marketValue"/>
+        <result column="profit_loss" property="profitLoss"/>
+        <result column="deal_time" property="dealTime"/>
+    </resultMap>
+    <insert id="insertUser" parameterType="com.xxx.stock_trading_springboot.Bean.Position" useGeneratedKeys="true" keyProperty="positionId">
+    </insert>
+    <insert id="insertBuyTransaction">
+        insert into position (account_id,ts_code,deal_price,number,cost,market_price,market_value,profit_loss,deal_time)
+            value (#{accountId},#{tsCode},#{dealPrice},#{number},#{cost},#{marketPrice},#{marketValue},#{profitLoss},#{dealTime});
+    </insert>
+    <update id="updateTransaction">
+        update position
+        <set>
+            number = #{number},
+            cost = #{number} * deal_price,
+            market_value = market_price * #{number},
+            profit_loss =(market_price * #{number}) - (#{number} * deal_price)
+        </set>
+        <where>
+            ts_code=#{tsCode}
+            and
+            account_id=#{accountId}
+        </where>
+    </update>
+    <update id="updateBuyTransaction">
+        update position
+        <set>
+            deal_price = #{dealPrice},
+            number = #{number},
+            cost = #{cost},
+            market_price = #{marketPrice},
+            market_value = #{marketValue},
+            profit_loss = #{profitLoss},
+            deal_time = #{dealTime}
+        </set>
+        <where>
+            ts_code=#{tsCode}
+            and
+            account_id=#{accountId}
+        </where>
+    </update>
+    <delete id="deleteZero">
+        delete from position
+        where number = 0;
+    </delete>
+    <select id="selectPositionsByAccountId" resultMap="PositionResultMap">
+        select * from position
+        where account_id=#{accountId}
+    </select>
+    <select id="countPositionsByAccountId" resultType="java.lang.Integer">
+        select COUNT(* )from position
+        where account_id=#{accountId}
+    </select>
+    <select id="selectPositionByTsCode" resultMap="PositionResultMap">
+        select * from   position
+        where
+            ts_code=#{tsCode}
+          and
+            account_id=#{accountId}
+        ;
+    </select>
+</mapper>

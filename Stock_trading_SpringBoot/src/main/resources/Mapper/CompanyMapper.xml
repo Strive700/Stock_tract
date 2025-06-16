@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xxx.stock_trading_springboot.Mapper.CompanyMapper">
+    <resultMap id="CompanyResultMap" type="com.xxx.stock_trading_springboot.Bean.Company">
+        <result column="ts_code" property="tsCode" />
+        <result column="company_id" property="companyId"/>
+        <result column="reg_capital" property="regCapital"/>
+        <result column="main_business" property="mainBusiness"/>
+    </resultMap>
+    <select id="selectone" resultMap="CompanyResultMap">
+        select  * from company
+        where ts_code= #{tsCode};
+    </select>
+</mapper>

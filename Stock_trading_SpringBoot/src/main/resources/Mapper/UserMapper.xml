@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xxx.stock_trading_springboot.Mapper.UserMapper">
+    <resultMap id="UserResultMap" type="com.xxx.stock_trading_springboot.Bean.User">
+        <result column="nick_name" property="nickName" />
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime" />
+        <result column="user_id" property="userId"/>
+        <result column="account_id" property="accountId"/>
+    </resultMap>
+    <insert id="insertUser" parameterType="com.xxx.stock_trading_springboot.Bean.User" useGeneratedKeys="true" keyProperty="userId">
+        insert into user (nick_name,name,phone,password,sex,create_time,update_time,status,role,avatar,account_id,email)
+        values (#{nickName},#{name},#{phone},#{password},#{sex},#{createTime},#{updateTime},#{status},#{role},#{avatar},#{accountId},#{email});
+    </insert>
+    <update id="updateUser">
+        UPDATE user
+        SET
+            name = #{username},
+            nick_name = #{nickName},
+            phone = #{phone},
+            sex = #{sex}
+        WHERE user_id = #{userId};
+
+    </update>
+    <update id="ChangePasswordByEmail">
+        UPDATE user
+        SET
+            password = #{password}
+        WHERE email = #{email};
+    </update>
+
+    <select id="selectUserByNickName" resultMap="UserResultMap">
+        select * from user where nick_name = #{name}
+    </select>
+    <select id="selectUserByPhone" resultMap="UserResultMap">
+        select * from user where phone = #{phone}
+    </select>
+    <select id="selectUserByEmail" resultMap="UserResultMap">
+        select * from user where email = #{email}
+    </select>
+</mapper>
